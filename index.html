@@ -1,0 +1,332 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cálculo de Calor usando la Regla del Trapecio</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Plotly JS -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f9;
+        }
+        h1, h2, h3 {
+            color: #007bff;
+            animation: fadeIn 2s ease-in-out;
+            text-align: center;
+        }
+        .result {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #28a745;
+            animation: fadeIn 2s ease-in-out;
+            text-align: center;
+        }
+        .form-group label {
+            font-weight: bold;
+        }
+        .btn-custom {
+            background-color: #007bff;
+            color: white;
+            transition: background-color 0.3s ease;
+        }
+        .btn-custom:hover {
+            background-color: #0056b3;
+        }
+        .table-custom {
+            margin-bottom: 40px;
+        }
+        .table-custom th, .table-custom td {
+            vertical-align: middle;
+            text-align: center;
+        }
+        .step, .results-detail {
+            margin-top: 20px;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            background-color: #ffffff;
+            animation: slideIn 1s ease-out;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+        .step h3, .results-detail h3 {
+            color: #007bff;
+        }
+        .results-detail {
+            border-left: 5px solid #007bff;
+        }
+        .results-detail ol {
+            margin: 0;
+            padding-left: 20px;
+        }
+        .results-detail .result-step {
+            margin-bottom: 20px;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        @keyframes slideIn {
+            from { transform: translateX(-100%); }
+            to { transform: translateX(0); }
+        }
+        #plotly_chart {
+            width: 100%;
+            height: 500px;
+            margin-top: 20px;
+        }
+        .table-custom thead th {
+            background-color: #007bff;
+            color: white;
+        }
+        .table-custom tbody tr:nth-child(odd) {
+            background-color: #f9f9f9;
+        }
+        .table-custom tbody tr:hover {
+            background-color: #e2e2e2;
+        }
+        .form-control, .btn-custom {
+            transition: all 0.3s ease;
+        }
+        .form-control:focus {
+            border-color: #007bff;
+            box-shadow: 0 0 0 0.2rem rgba(38, 143, 255, 0.25);
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1 class="my-4">Cálculo de Calor usando la Regla del Trapecio</h1>
+
+        <div class="problem-description">
+            <h2>Descripción del Problema</h2>
+            <p>
+                Calcule la cantidad de calor requerida para elevar la temperatura de 1500 gramos de un material desde -150 °C a 50 °C. 
+                Use la regla del trapecio para sus cálculos, con un valor de incremento de temperatura (ΔT) de 50 °C.
+            </p>
+            <p>
+                Para realizar el cálculo, se proporciona la siguiente tabla de calor específico en función de la temperatura:
+            </p>
+        </div>
+
+        <div class="step">
+            <h3>Paso a Paso del Procedimiento</h3>
+            <ol>
+                <li><strong>Obtener los datos:</strong> Recopila los datos de calor específico y las temperaturas correspondientes.</li>
+                <li><strong>Definir el intervalo:</strong> El intervalo de temperatura es de -100 °C a 50 °C, con un incremento de 50 °C.</li>
+                <li><strong>Filtrar datos:</strong> Filtra los datos de acuerdo al rango dado en el problema. Utiliza los siguientes datos:
+                    <ul>
+                        <li>-100 °C: 0.11904 cal/g°C</li>
+                        <li>-50 °C: 0.12486 cal/g°C</li>
+                        <li>0 °C: 0.13200 cal/g°C</li>
+                        <li>50 °C: 0.14046 cal/g°C</li>
+                    </ul>
+                </li>
+                <li><strong>Aplicar la Regla del Trapecio:</strong> Utiliza la fórmula de la regla del trapecio para calcular la integral de la función de calor específico:
+                    <ul>
+                        <li><strong>Fórmula:</strong> 
+                            <code>Q = (ΔT / 2) * (f(T0) + 2 * (sumatoria de f(Ti) donde 1 <= i <= n-1) + f(Tn))</code>
+                            donde:
+                            <ul>
+                                <li><code>ΔT</code> = 50 °C (diferencia entre cada par de temperaturas)</li>
+                                <li><code>T0</code> = Temperatura inicial (-100 °C)</li>
+                                <li><code>Tn</code> = Temperatura final (50 °C)</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Multiplicar por la masa:</strong> Multiplica el resultado de la integral por la masa del material para obtener la cantidad total de calor:
+                    <ul>
+                        <li><strong>Fórmula:</strong> 
+                            <code>Q_total = Q * masa</code>
+                            donde:
+                            <ul>
+                                <li><code>Q</code> = Resultado de la integral calculada</li>
+                                <li><code>masa</code> = 1500 gramos</li>
+                            </ul>
+                        </li>
+                    </ul>
+                </li>
+                <li><strong>Mostrar resultados:</strong> Presenta el resultado final en calorías.</li>
+            </ol>
+        </div>
+        <br>
+        <h2>Datos de Calor Específico</h2>
+        <table class="table table-striped table-custom">
+            <thead>
+                <tr>
+                    <th>Temperatura (°C)</th>
+                    <th>Calor Específico (cal/g°C)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr><td>-100</td><td>0.11904</td></tr>
+                <tr><td>-50</td><td>0.12486</td></tr>
+                <tr><td>0</td><td>0.13200</td></tr>
+                <tr><td>50</td><td>0.14046</td></tr>
+            </tbody>
+        </table>
+
+        <h2>Tabla de Datos Usados para el Cálculo</h2>
+        <table class="table table-striped table-custom">
+            <thead>
+                <tr>
+                    <th>Temperatura (°C)</th>
+                    <th>Calor Específico (cal/g°C)</th>
+                </tr>
+            </thead>
+            <tbody id="data-table">
+                <!-- La tabla se llenará dinámicamente con JavaScript -->
+            </tbody>
+        </table>
+
+        <h2>Configuración de Cálculo</h2>
+        <div class="form-group">
+            <label for="mass">Masa (gramos):</label>
+            <input type="number" id="mass" class="form-control" value="1500" step="0.01">
+        </div>
+        <button class="btn btn-custom" onclick="calculateHeat()">Calcular Calor</button>
+
+        <h2>Resultados</h2>
+        <p id="result" class="result">0 calorías</p>
+
+        <h2>Visualización de Trapecios</h2>
+        <div id="plotly_chart"></div>
+
+        <div class="results-detail">
+            <h3>Desglose del Procedimiento</h3>
+            <div class="result-step">
+                <h4>1. Datos Iniciales</h4>
+                <p>Temperaturas y sus respectivos valores de calor específico:</p>
+                <ul>
+                    <li>-100 °C: 0.11904 cal/g°C</li>
+                    <li>-50 °C: 0.12486 cal/g°C</li>
+                    <li>0 °C: 0.13200 cal/g°C</li>
+                    <li>50 °C: 0.14046 cal/g°C</li>
+                </ul>
+            </div>
+            <div class="result-step">
+                <h4>2. Cálculo de la Integral con la Regla del Trapecio</h4>
+                <p>Se realiza el cálculo de la integral aproximada del calor específico en el intervalo dado.</p>
+                <p><strong>Fórmula:</strong> Q = (ΔT / 2) * (f(T0) + 2 * (sumatoria de f(Ti) donde 1 <= i <= n-1) + f(Tn))</p>
+                <p><strong>Resultado:</strong> <span id="integral-result">0</span> cal/g</p>
+            </div>
+            <div class="result-step">
+                <h4>3. Cálculo del Calor Total</h4>
+                <p>Se multiplica la integral obtenida por la masa del material.</p>
+                <p><strong>Fórmula:</strong> Q_total = Q * masa</p>
+                <p><strong>Q:</strong> <span id="Qmass">0.5</span>cal/g</p>
+                <p><strong>Masa:</strong> <span id="mass-value">1500</span>g</p>
+                <p><strong>Resultado:</strong> <span id="total-heat-result">0</span> calorías</p>
+            </div>
+        </div>
+        <br>
+        <h2>Explicación del Procedimiento</h2>
+        <p>
+            El cálculo del calor necesario para elevar la temperatura de un material se realiza utilizando la regla del trapecio para 
+            aproximar la integral de la función de calor específico con respecto a la temperatura. En este caso, hemos dividido el 
+            intervalo de temperatura en subintervalos de 50 °C y hemos utilizado los valores de calor específico correspondientes 
+            para realizar la aproximación.
+        </p>
+    </div>
+
+    <script>
+        // Datos de calor específico en función de la temperatura
+        const specificHeatData = [
+            { temperature: -100, specificHeat: 0.11904 },
+            { temperature: -50, specificHeat: 0.12486 },
+            { temperature: 0, specificHeat: 0.13200 },
+            { temperature: 50, specificHeat: 0.14046 }
+        ];
+
+        // Función para calcular el calor usando la regla del trapecio
+        function calculateHeat() {
+            const mass = parseFloat(document.getElementById('mass').value);
+            const n = specificHeatData.length;
+            const deltaT = (specificHeatData[n - 1].temperature - specificHeatData[0].temperature) / (n - 1);
+
+            let Q = 0;
+            for (let i = 0; i < n; i++) {
+                if (i === 0 || i === n - 1) {
+                    Q += specificHeatData[i].specificHeat;
+                } else {
+                    Q += 2 * specificHeatData[i].specificHeat;
+                }
+            }
+            Q = (deltaT / 2) * Q;
+
+            const Q_total = Q * mass;
+            
+            document.getElementById('result').innerText = Q_total.toFixed(2) + " calorías";
+            document.getElementById('integral-result').innerText = Q.toFixed(2);
+            document.getElementById('Qmass').innerText = Q.toFixed(2);
+            document.getElementById('total-heat-result').innerText = Q_total.toFixed(2);
+            document.getElementById('mass-value').innerText = mass.toFixed(2);
+
+            // Generar la visualización de los trapecios
+            generatePlot();
+        }
+
+        // Función para generar la visualización de los trapecios usando Plotly
+        function generatePlot() {
+            const temperatures = specificHeatData.map(data => data.temperature);
+            const specificHeats = specificHeatData.map(data => data.specificHeat);
+
+            const trace1 = {
+                x: temperatures,
+                y: specificHeats,
+                mode: 'lines+markers',
+                name: 'Datos',
+                line: { shape: 'spline' },
+                marker: { color: 'blue' }
+            };
+
+            const trace2 = {
+                x: temperatures,
+                y: specificHeats,
+                fill: 'tozeroy',
+                type: 'scatter',
+                mode: 'none',
+                name: 'Áreas de Trapecios'
+            };
+
+            const layout = {
+                title: 'Visualización de Calor Específico vs. Temperatura',
+                xaxis: { title: 'Temperatura (°C)' },
+                yaxis: { title: 'Calor Específico (cal/g°C)' },
+                showlegend: true
+            };
+
+            Plotly.newPlot('plotly_chart', [trace1, trace2], layout);
+        }
+
+        // Llenar la tabla de datos con los datos iniciales
+        function populateDataTable() {
+            const tableBody = document.getElementById('data-table');
+            specificHeatData.forEach(data => {
+                const row = document.createElement('tr');
+                const cellTemp = document.createElement('td');
+                const cellHeat = document.createElement('td');
+
+                cellTemp.textContent = data.temperature;
+                cellHeat.textContent = data.specificHeat;
+
+                row.appendChild(cellTemp);
+                row.appendChild(cellHeat);
+                tableBody.appendChild(row);
+            });
+        }
+
+        // Ejecutar al cargar la página
+        window.onload = function() {
+            populateDataTable();
+        };
+    </script>
+</body>
+</html>
